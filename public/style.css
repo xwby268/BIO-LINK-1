@@ -53,6 +53,8 @@ body {
   -webkit-backdrop-filter: blur(var(--ios-blur));
   border: 0.5px solid rgba(255, 255, 255, 0.12);
   box-shadow: 0 12px 48px 0 rgba(0, 0, 0, 0.9);
+  position: relative;
+  z-index: 10;
 }
 
 .ios-button {
