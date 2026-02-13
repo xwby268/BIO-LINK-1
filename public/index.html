@@ -3,24 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-    <title>Baeci Store | Professional Biolink</title>
-
+    
+    <title>BAECI STORE | Professional Biolink</title>
+    
     <!-- SEO Optimization -->
-    <meta name="description" content="Baeci Store Official - Penyedia layanan Rekber, Japost, dan Topup Game termurah & terpercaya">
-    <meta name="keywords" content="Baeci Store, Rekber, Japost, Topup Game">
-    <meta name="author" content="Baeci Store">
-    <meta property="og:title" content="Baeci Store | Professional Biolink">
+    <meta name="description" content="BAECI STORE Official - Penyedia layanan Rekber, Japost, dan Topup Game termurah & terpercaya">
+    <meta name="keywords" content="BAECI STORE, Rekber, Japost, Topup Game, Jasa Post, Rekber Terpercaya">
+    <meta name="author" content="BAECI STORE">
+    <meta property="og:title" content="BAECI STORE | Professional Biolink">
     <meta property="og:description" content="Layanan Rekber & Topup Game Termurah">
     <meta property="og:image" content="https://f.top4top.io/p_3695yhpth1.png">
     <meta property="og:url" content="https://baeci-store.vercel.app">
-
+    
     <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+    
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="/style.css">
@@ -40,7 +40,7 @@
             </video>
             <div class="absolute inset-0 sidebar-gradient"></div>
         </div>
-
+        
         <div class="relative z-10 p-8 flex flex-col h-full">
             <!-- Sidebar Header -->
             <div class="flex items-center justify-between mb-12">
@@ -57,9 +57,17 @@
                     <i class="fa-solid fa-xmark text-lg"></i>
                 </button>
             </div>
-
+            
             <nav id="sidebar-nav" class="space-y-3">
-                <!-- Dynamic content will be loaded here -->
+                <!-- Home Link - Static -->
+                <a href="/" class="flex items-center gap-5 p-5 rounded-[2rem] bg-white/10 border border-white/20 text-white font-black shadow-xl group">
+                    <i class="fa-solid fa-house text-blue-400 group-hover:scale-110 transition-transform"></i> 
+                    <span data-editable="nav_home">Home</span>
+                </a>
+                <a href="/dashboard" class="flex items-center gap-5 p-5 rounded-[2rem] hover:bg-white/10 text-white/70 font-black transition-all group">
+                    <i class="fa-solid fa-chart-line text-blue-400 group-hover:scale-110 transition-transform"></i> 
+                    <span>Activity Panel</span>
+                </a>
             </nav>
 
             <div class="mt-auto pt-8">
@@ -67,7 +75,7 @@
                     <p class="text-[9px] text-gray-500 uppercase font-black tracking-[0.2em] mb-1">Local Time</p>
                     <p id="clock" class="text-2xl font-display font-black text-white/90 tabular-nums">00:00:00</p>
                 </div>
-                <p class="text-[9px] text-gray-600 font-black tracking-widest uppercase text-center">&copy; 2026 Baeci Store</p>
+                <p class="text-[9px] text-gray-600 font-black tracking-widest uppercase text-center">&copy; 2026 BAECI STORE</p>
             </div>
         </div>
     </div>
@@ -89,6 +97,11 @@
 
             <div id="admin-panel" class="hidden space-y-6">
                 <div>
+                    <h3 class="text-xs font-black uppercase text-gray-500 mb-4 tracking-widest">Edit Text Content</h3>
+                    <div id="text-edit-list" class="space-y-3"></div>
+                </div>
+
+                <div>
                     <h3 class="text-xs font-black uppercase text-gray-500 mb-4 tracking-widest">Profile Images</h3>
                     <div class="space-y-3">
                         <input type="text" id="img-desktop" placeholder="Desktop Background URL" class="w-full bg-white/5 border border-white/10 p-3 rounded-xl text-sm">
@@ -101,7 +114,7 @@
                     <h3 class="text-xs font-black uppercase text-gray-500 mb-4 tracking-widest">Profile Info</h3>
                     <div class="space-y-3">
                         <input type="text" id="profile-name" placeholder="Profile Name" class="w-full bg-white/5 border border-white/10 p-3 rounded-xl text-sm">
-                        <input type="text" id="profile-username" placeholder="Username (@)" class="w-full bg-white/5 border border-white/10 p-3 rounded-xl text-sm">
+                        <input type="text" id="profile-username" placeholder="Username @" class="w-full bg-white/5 border border-white/10 p-3 rounded-xl text-sm">
                         <textarea id="profile-bio" placeholder="Bio Text" class="w-full bg-white/5 border border-white/10 p-3 rounded-xl text-sm h-20"></textarea>
                     </div>
                 </div>
@@ -114,7 +127,7 @@
                         <input type="text" id="cfg-meta-keys" placeholder="Meta Keywords" class="w-full bg-white/5 border border-white/10 p-3 rounded-xl text-sm">
                     </div>
                 </div>
-
+                
                 <hr class="border-white/5">
 
                 <div>
@@ -154,57 +167,63 @@
 
         <!-- MAIN CONTENT -->
         <main class="flex-1 relative h-full overflow-y-auto no-scrollbar scroll-smooth">
-
-            <!-- HEADER MOBILE -->
-            <div class="lg:hidden flex items-center justify-between px-6 py-4 sticky top-0 z-[60] ios-panel border-t-0 rounded-b-[2.5rem] mx-2 mt-2">
-                <div class="flex items-center gap-2">
-                    <span class="font-display font-black text-xl tracking-tight" data-editable="header_title">Baeci Store</span>
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/e/e4/Twitter_Verified_Badge.svg" class="w-5 h-5 mt-1" alt="Verified">
+            
+            <!-- MOBILE HEADER - FIXED TOP (PASTIKAN INI ADA) -->
+            <div class="lg:hidden fixed top-0 left-0 right-0 z-[100] ios-panel border-t-0 rounded-b-[2.5rem] mx-2 mt-2" style="background: rgba(28, 28, 30, 0.95); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);">
+                <div class="flex items-center justify-between px-6 py-4">
+                    <div class="flex items-center gap-2">
+                        <span class="font-display font-black text-xl tracking-tight text-white" data-editable="header_title">BAECI STORE</span>
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e4/Twitter_Verified_Badge.svg" class="w-5 h-5 mt-1" alt="Verified">
+                    </div>
+                    <button onclick="toggleSidebar()" class="w-12 h-12 flex items-center justify-center rounded-2xl bg-white/10 active:scale-90 transition-transform hover:bg-white/20 border border-white/20">
+                        <i class="fa-solid fa-bars-staggered text-xl text-white"></i>
+                    </button>
                 </div>
-                <button onclick="toggleSidebar()" class="w-12 h-12 flex items-center justify-center rounded-2xl bg-white/10 active:scale-90 transition-transform hover:bg-white/20">
-                    <i class="fa-solid fa-bars-staggered text-xl"></i>
-                </button>
             </div>
+            
+            <!-- SPACER untuk konten (agar tidak tertutup fixed header) -->
+            <div class="lg:hidden h-[80px]"></div>
 
-            <div class="max-w-xl mx-auto px-6 pt-12 pb-32">
-
+            <!-- Konten utama -->
+            <div class="max-w-xl mx-auto px-6 pt-4 lg:pt-12 pb-32">
+                
                 <!-- PROFILE -->
                 <div class="flex flex-col items-center text-center mb-12">
                     <div class="profile-glow w-32 h-32 lg:w-48 lg:h-48 mb-8">
                         <img src="https://f.top4top.io/p_3695yhpth1.png" 
-                             alt="Baeci Store" 
+                             alt="BAECI STORE" 
                              class="w-full h-full rounded-full object-cover border-[6px] border-black relative z-10">
                         <div class="absolute bottom-3 right-3 bg-green-500 w-6 h-6 rounded-full border-4 border-black shadow-2xl z-20"></div>
                     </div>
-
+                    
                     <div class="flex items-center justify-center gap-2 mb-4">
                         <h2 class="text-3xl lg:text-6xl font-display font-black text-white tracking-tighter" data-editable="title">
-                            Baeci Store
+                            BAECI STORE
                         </h2>
                         <img src="https://upload.wikimedia.org/wikipedia/commons/e/e4/Twitter_Verified_Badge.svg" 
                              alt="Verified" 
                              class="w-6 h-6 lg:w-10 lg:h-10 mt-1 lg:mt-2">
                     </div>
-
+                    
                     <div class="px-5 py-2 rounded-[1.2rem] bg-blue-500/10 border border-blue-500/20 mb-8 inline-block shadow-lg">
-                        <p class="text-blue-400 font-black text-[10px] lg:text-sm tracking-[0.2em] uppercase" data-editable="username">@xwby268</p>
+                        <p class="text-blue-400 font-black text-[10px] lg:text-sm tracking-[0.2em] uppercase" data-editable="username">@BAECIOFFICIAL</p>
                     </div>
-
+                    
                     <p class="text-gray-300 text-lg lg:text-2xl font-bold leading-relaxed max-w-sm" data-editable="bio">
                         Rekber, Japost, Topup
                     </p>
-
+                    
                     <p class="text-gray-500 text-xs font-medium mt-2 tracking-wide" data-editable="footer_note">Professional Digital Service since 2024</p>
-
+                    
                     <!-- DYNAMIC STATS -->
                     <div class="flex gap-4 w-full mt-10">
                         <div class="flex-1 ios-panel py-4 rounded-[2rem] hover:scale-105 transition-transform duration-300 cursor-default">
                             <span class="block text-xl lg:text-3xl font-display font-black" data-editable="stat_sales">12K+</span>
-                            <span class="text-[9px] text-gray-500 uppercase font-black tracking-widest">Sales</span>
+                            <span class="text-[9px] text-gray-500 uppercase font-black tracking-widest">SALES</span>
                         </div>
                         <div class="flex-1 ios-panel py-4 rounded-[2rem] hover:scale-105 transition-transform duration-300 cursor-default">
                             <span class="block text-xl lg:text-3xl font-display font-black" data-editable="stat_rating">4.9</span>
-                            <span class="text-[9px] text-gray-500 uppercase font-black tracking-widest">Rating</span>
+                            <span class="text-[9px] text-gray-500 uppercase font-black tracking-widest">RATING</span>
                         </div>
                     </div>
                 </div>
@@ -218,7 +237,7 @@
                         <!-- Dynamic Social Icons -->
                     </div>
                     <p class="text-[10px] text-gray-600 font-black tracking-[0.4em] uppercase">
-                        Official Business Profile &bull; Baeci Store
+                        Official Business Profile &bull; BAECI STORE
                     </p>
                 </div>
             </div>
@@ -226,5 +245,12 @@
     </div>
 
     <script src="/script.js"></script>
+    <script>
+        // Debug: cek apakah header muncul
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Mobile header exists:', !!document.querySelector('.lg\\:hidden.fixed'));
+            console.log('Window width:', window.innerWidth);
+        });
+    </script>
 </body>
 </html>
