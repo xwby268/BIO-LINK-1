@@ -6,50 +6,88 @@
     <title>DB Admin | Baeci Store</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body class="bg-black text-white p-4 md:p-8 min-h-screen overflow-y-auto">
     <div class="max-w-4xl mx-auto pb-20">
         <div class="flex justify-between items-center mb-8">
             <h1 class="text-3xl font-black">Database Admin</h1>
-            <a href="/" class="text-blue-400 hover:underline">Back to Home</a>
+            <a href="/" class="text-blue-400 hover:underline flex items-center gap-2">
+                <i class="fa-solid fa-arrow-left"></i> Back to Home
+            </a>
         </div>
 
         <div id="admin-login" class="ios-panel p-8 rounded-3xl max-w-md mx-auto">
             <h2 class="text-xl font-bold mb-4">Login</h2>
             <input type="password" id="admin-pw" placeholder="Admin Password" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl mb-4 outline-none focus:border-blue-500">
-            <button onclick="loginAdmin()" class="w-full bg-blue-600 p-4 rounded-xl font-bold">Login</button>
+            <button onclick="loginAdmin()" class="w-full bg-blue-600 p-4 rounded-xl font-bold hover:bg-blue-700 transition-colors">Login</button>
         </div>
 
         <div id="admin-panel" class="hidden space-y-8">
             <div class="ios-panel p-6 rounded-3xl">
-                <h2 class="text-xl font-bold mb-4">Profile Management</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="space-y-2">
-                        <label class="text-xs text-gray-400 uppercase font-black">Desktop Background URL</label>
+                <h2 class="text-xl font-bold mb-4">Profile Images</h2>
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-xs text-gray-400 uppercase font-black block mb-2">Desktop Background URL</label>
                         <input type="text" id="img-desktop" class="w-full bg-white/5 border border-white/10 p-3 rounded-xl text-sm" placeholder="URL">
                     </div>
-                    <div class="space-y-2">
-                        <label class="text-xs text-gray-400 uppercase font-black">Mobile Background URL</label>
+                    <div>
+                        <label class="text-xs text-gray-400 uppercase font-black block mb-2">Mobile Background URL</label>
                         <input type="text" id="img-mobile" class="w-full bg-white/5 border border-white/10 p-3 rounded-xl text-sm" placeholder="URL">
                     </div>
-                    <div class="space-y-2">
-                        <label class="text-xs text-gray-400 uppercase font-black">Profile Picture URL</label>
+                    <div>
+                        <label class="text-xs text-gray-400 uppercase font-black block mb-2">Profile Picture URL</label>
                         <input type="text" id="img-profile" class="w-full bg-white/5 border border-white/10 p-3 rounded-xl text-sm" placeholder="URL">
                     </div>
-                    <div class="space-y-2">
-                        <label class="text-xs text-gray-400 uppercase font-black">Profile Name</label>
+                </div>
+            </div>
+
+            <div class="ios-panel p-6 rounded-3xl">
+                <h2 class="text-xl font-bold mb-4">Profile Information</h2>
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-xs text-gray-400 uppercase font-black block mb-2">Profile Name</label>
                         <input type="text" id="profile-name" class="w-full bg-white/5 border border-white/10 p-3 rounded-xl text-sm" placeholder="e.g. Baeci Store">
                     </div>
-                    <div class="space-y-2">
-                        <label class="text-xs text-gray-400 uppercase font-black">Username (@)</label>
+                    <div>
+                        <label class="text-xs text-gray-400 uppercase font-black block mb-2">Username (@)</label>
                         <input type="text" id="profile-username" class="w-full bg-white/5 border border-white/10 p-3 rounded-xl text-sm" placeholder="e.g. @xwby268">
                     </div>
-                    <div class="space-y-2 md:col-span-2">
-                        <label class="text-xs text-gray-400 uppercase font-black">Bio Text</label>
+                    <div>
+                        <label class="text-xs text-gray-400 uppercase font-black block mb-2">Bio Text</label>
                         <textarea id="profile-bio" class="w-full bg-white/5 border border-white/10 p-3 rounded-xl text-sm h-20" placeholder="e.g. Rekber, Japost, Topup"></textarea>
                     </div>
                 </div>
+            </div>
+
+            <div class="ios-panel p-6 rounded-3xl">
+                <h2 class="text-xl font-bold mb-4">SEO Configuration</h2>
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-xs text-gray-400 uppercase font-black block mb-2">Site Title</label>
+                        <input type="text" id="cfg-site-title" class="w-full bg-white/5 border border-white/10 p-3 rounded-xl text-sm" placeholder="Site Title">
+                    </div>
+                    <div>
+                        <label class="text-xs text-gray-400 uppercase font-black block mb-2">Meta Description</label>
+                        <textarea id="cfg-meta-desc" class="w-full bg-white/5 border border-white/10 p-3 rounded-xl text-sm h-20" placeholder="SEO Description"></textarea>
+                    </div>
+                    <div>
+                        <label class="text-xs text-gray-400 uppercase font-black block mb-2">Meta Keywords</label>
+                        <input type="text" id="cfg-meta-keys" class="w-full bg-white/5 border border-white/10 p-3 rounded-xl text-sm" placeholder="keyword1, keyword2">
+                    </div>
+                </div>
+            </div>
+
+            <div class="ios-panel p-6 rounded-3xl">
+                <h2 class="text-xl font-bold mb-4">Main Links</h2>
+                <div id="links-edit-list" class="space-y-4 mb-4"></div>
+                <button onclick="addLink()" class="w-full bg-white/5 p-4 rounded-xl border border-dashed border-white/20 text-xs font-black uppercase tracking-widest hover:bg-white/10 transition-colors">+ Add Link</button>
+            </div>
+
+            <div class="ios-panel p-6 rounded-3xl">
+                <h2 class="text-xl font-bold mb-4">Sidebar Items</h2>
+                <div id="sidebar-edit-list" class="space-y-4 mb-4"></div>
+                <button onclick="addSidebarBtn()" class="w-full bg-white/5 p-4 rounded-xl border border-dashed border-white/20 text-xs font-black uppercase tracking-widest hover:bg-white/10 transition-colors">+ Add Sidebar Item</button>
             </div>
 
             <div class="ios-panel p-6 rounded-3xl">
@@ -59,34 +97,14 @@
             </div>
 
             <div class="ios-panel p-6 rounded-3xl">
-                <h2 class="text-xl font-bold mb-4">Main Links</h2>
-                <p class="text-[10px] text-gray-500 mb-4">Click "HTML" button to add custom HTML for routes starting with / (e.g. /pay)</p>
-                <div id="links-edit-list" class="space-y-4 mb-4"></div>
-                <button onclick="addLink()" class="w-full bg-white/5 p-4 rounded-xl border border-dashed border-white/20 text-xs font-black uppercase">+ Add Link</button>
-            </div>
-
-            <div class="ios-panel p-6 rounded-3xl">
-                <h2 class="text-xl font-bold mb-4">Sidebar Items</h2>
-                <p class="text-[10px] text-gray-500 mb-4">Click "HTML" button to add custom HTML for routes starting with / (e.g. /menu)</p>
-                <div id="sidebar-edit-list" class="space-y-4 mb-4"></div>
-                <button onclick="addSidebarBtn()" class="w-full bg-white/5 p-4 rounded-xl border border-dashed border-white/20 text-xs font-black uppercase">+ Add Sidebar Item</button>
-            </div>
-
-            <div class="ios-panel p-6 rounded-3xl">
                 <h2 class="text-xl font-bold mb-4">Custom Pages Builder</h2>
                 <div id="pages-edit-list" class="space-y-4 mb-4"></div>
                 <button onclick="addCustomPage()" class="w-full bg-white/5 p-4 rounded-xl border border-dashed border-white/20 text-xs font-black uppercase tracking-widest hover:bg-white/10 transition-colors">+ Add Custom Page</button>
             </div>
 
-            <button onclick="saveAdmin()" class="w-full bg-green-600 p-5 rounded-2xl font-black uppercase text-lg shadow-xl shadow-green-600/20">Save All Changes</button>
+            <button onclick="saveAdmin()" class="w-full bg-green-600 p-5 rounded-2xl font-black uppercase text-lg shadow-xl shadow-green-600/20 hover:bg-green-700 transition-colors">Save All Changes</button>
         </div>
     </div>
-    <script src="script.js"></script>
-    <script>
-        // Custom login for this page if needed, but script.js handles most
-        if(window.location.pathname === '/dbadmin.html') {
-             // Handle initial state
-        }
-    </script>
+    <script src="/script.js"></script>
 </body>
 </html>

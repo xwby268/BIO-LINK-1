@@ -1,20 +1,20 @@
 {
-  "name": "workspace",
+  "name": "baeci-store",
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js",
+    "vercel-build": "echo 'Build completed'"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "Baeci Store - Professional Biolink",
   "dependencies": {
     "bcryptjs": "^3.0.3",
     "cookie-parser": "^1.4.7",
     "express": "^4.19.2",
     "express-session": "^1.19.0",
-    "mongodb": "^7.1.0"
+    "mongodb": "^6.8.0"
   }
 }

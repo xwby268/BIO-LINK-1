@@ -1,10 +1,13 @@
 {
   "version": 2,
-  "name": "baeci-store",
   "builds": [
     {
       "src": "server.js",
       "use": "@vercel/node"
+    },
+    {
+      "src": "public/**",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
@@ -14,23 +17,23 @@
     },
     {
       "src": "/dashboard",
-      "dest": "server.js"
+      "dest": "/server.js"
     },
     {
       "src": "/dbadmin",
-      "dest": "server.js"
+      "dest": "/server.js"
     },
     {
       "src": "/style.css",
-      "dest": "public/style.css"
+      "dest": "/public/style.css"
     },
     {
       "src": "/script.js",
-      "dest": "public/script.js"
+      "dest": "/public/script.js"
     },
     {
       "src": "/(.*)",
-      "dest": "server.js"
+      "dest": "/server.js"
     }
   ]
 }
