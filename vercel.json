@@ -14,19 +14,19 @@
     },
     {
       "src": "/dashboard",
-      "dest": "dashboard.html"
+      "dest": "server.js"
     },
     {
       "src": "/dbadmin",
-      "dest": "dbadmin.html"
+      "dest": "server.js"
     },
     {
       "src": "/style.css",
-      "dest": "style.css"
+      "dest": "public/style.css"
     },
     {
       "src": "/script.js",
-      "dest": "script.js"
+      "dest": "public/script.js"
     },
     {
       "src": "/(.*)",

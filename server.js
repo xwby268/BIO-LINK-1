@@ -99,16 +99,22 @@ app.post('/api/content', isAdmin, async (req, res) => {
     }
 });
 
-app.use(express.static(__dirname));
+// Serve static files from public directory
+app.use(express.static(path.join(__dirname, 'public')));
 
+// Specific routes without .html extension
 app.get('/dbadmin', (req, res) => {
-    res.sendFile(path.join(__dirname, 'dbadmin.html'));
+    res.sendFile(path.join(__dirname, 'public', 'dbadmin.html'));
+});
+
+app.get('/dashboard', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'dashboard.html'));
 });
 
 // Dynamic routes for custom HTML
 app.get('/:route', async (req, res, next) => {
     const route = req.params.route;
-    if (['dbadmin', 'api', 'style.css', 'script.js', 'favicon.ico'].includes(route) || route.includes('.')) return next();
+    if (['dbadmin', 'dashboard', 'api', 'style.css', 'script.js', 'favicon.ico'].includes(route) || route.includes('.')) return next();
     
     try {
         const client = await clientPromise;
@@ -132,7 +138,7 @@ app.get('/:route', async (req, res, next) => {
 });
 
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 app.listen(PORT, '0.0.0.0', () => {
