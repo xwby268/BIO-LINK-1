@@ -1,0 +1,116 @@
+:root {
+    --ios-blur: 40px;
+    --accent-color: #0A84FF;
+}
+
+body {
+    background-color: #000;
+    overflow: hidden;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    cursor: default;
+}
+
+/* Adaptive Backgrounds */
+.bg-mobile {
+    background-image: url('https://d.top4top.io/p_3695nb30a2.jpg') !important;
+    filter: blur(5px) brightness(0.7);
+    background-color: #000;
+}
+.bg-desktop {
+    background-image: url('https://c.top4top.io/p_3695apyqi1.jpg') !important;
+    filter: blur(0px) brightness(0.5);
+    background-color: #000;
+}
+
+.bg-layer {
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transform: scale(1.1);
+}
+
+/* iOS Style Glassmorphism */
+.ios-panel {
+    background: rgba(28, 28, 30, 0.45);
+    backdrop-filter: blur(var(--ios-blur));
+    -webkit-backdrop-filter: blur(var(--ios-blur));
+    border: 0.5px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 12px 48px 0 rgba(0, 0, 0, 0.9);
+}
+
+.ios-button {
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 0.5px solid rgba(255, 255, 255, 0.08);
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.ios-button:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-4px);
+}
+
+.ios-button:active {
+    transform: scale(0.95);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* Sidebar Video Overlay */
+.sidebar-video-wrap video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 100%;
+    min-height: 100%;
+    object-fit: cover;
+    opacity: 0.5;
+}
+
+.sidebar-gradient {
+    background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.85) 100%);
+}
+
+/* Animated Profile */
+.profile-glow {
+    position: relative;
+    padding: 8px;
+}
+.profile-glow::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(45deg, #0A84FF, #5E5CE6, #0A84FF);
+    border-radius: 50%;
+    z-index: -1;
+    animation: rotate-glow 4s linear infinite;
+    filter: blur(4px);
+}
+
+@keyframes rotate-glow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
+/* Sidebar Logic for Mobile & Desktop */
+@media (max-width: 1023px) {
+    .sidebar-hidden {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+}
+
+@media (min-width: 1024px) {
+    #sidebar {
+        transform: translateX(0) !important;
+        opacity: 1 !important;
+    }
+}

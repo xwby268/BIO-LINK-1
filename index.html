@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <title>Baeci Store | Professional Biolink</title>
+    
+    <!-- SEO Optimization -->
+    <meta name="description" content="Baeci Store Official - Penyedia layanan Rekber, Japost, dan Topup Game termurah & terpercaya sejak 2024. Aman, Cepat, dan Profesional.">
+    <meta name="keywords" content="Baeci Store, Rekber, Japost, Topup Game, Jasa Post, Rekber Terpercaya">
+    <meta name="author" content="Baeci Store">
+    <meta property="og:title" content="Baeci Store | Professional Biolink">
+    <meta property="og:description" content="Layanan Rekber & Topup Game Termurah.">
+    <meta property="og:image" content="https://vydrive.zone.id/f/4Nnve8ej">
+    <meta property="og:url" content="https://baeci-store.replit.app">
+    
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="text-white antialiased h-screen w-screen overflow-hidden font-sans">
+
+    <!-- Adaptive Background -->
+    <div class="bg-layer bg-mobile lg:hidden"></div>
+    <div class="bg-layer bg-desktop hidden lg:block"></div>
+    <div class="fixed inset-0 bg-black/40 z-[-1]"></div>
+
+    <!-- Sidebar (Mobile & Desktop Unified Logic) -->
+    <div id="sidebar" class="fixed inset-y-0 left-0 w-72 lg:w-[350px] z-[100] ios-panel border-r-0 sidebar-hidden transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
+        <div class="sidebar-video-wrap absolute inset-0 overflow-hidden pointer-events-none">
+            <video autoplay loop muted playsinline>
+                <source src="https://l.top4top.io/m_36929bt1g9.mp4" type="video/mp4">
+            </video>
+            <div class="absolute inset-0 sidebar-gradient"></div>
+        </div>
+        
+        <div class="relative z-10 p-8 flex flex-col h-full">
+            <!-- Sidebar Header -->
+            <div class="flex items-center justify-between mb-12">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-2xl bg-blue-600 flex items-center justify-center shadow-2xl shadow-blue-600/40">
+                        <i class="fa-solid fa-store text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-display font-bold">Menu</h1>
+                        <p class="text-[10px] text-blue-400 font-bold uppercase tracking-widest">Navigation</p>
+                    </div>
+                </div>
+                <button onclick="toggleSidebar()" class="lg:hidden w-10 h-10 rounded-full bg-white/10 flex items-center justify-center backdrop-blur-md">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            
+            <nav id="sidebar-nav" class="space-y-3">
+                <a href="/" class="flex items-center gap-5 p-5 rounded-[2rem] bg-white/10 border border-white/20 text-white font-black shadow-xl group">
+                    <i class="fa-solid fa-house text-blue-400 group-hover:scale-110 transition-transform"></i> 
+                    <span data-editable="nav_home">Home</span>
+                </a>
+                <a href="/dashboard" class="flex items-center gap-5 p-5 rounded-[2rem] hover:bg-white/10 text-white/70 font-black transition-all group">
+                    <i class="fa-solid fa-chart-line text-blue-400 group-hover:scale-110 transition-transform"></i> 
+                    <span>Activity Panel</span>
+                </a>
+            </nav>
+
+            <div class="mt-auto pt-8">
+                <div class="ios-panel p-6 rounded-[2.5rem] mb-6 text-center">
+                    <p class="text-[9px] text-gray-500 uppercase font-black tracking-[0.2em] mb-1">Local Time</p>
+                    <p id="clock" class="text-2xl font-display font-black text-white/90 tabular-nums">00:00:00</p>
+                </div>
+                <p class="text-[9px] text-gray-600 font-black tracking-widest uppercase text-center">&copy; 2026 Baeci Store</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADMIN MODAL -->
+    <div id="admin-modal" class="fixed inset-0 z-[200] hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-xl">
+        <div class="ios-panel w-full max-w-lg rounded-[3rem] p-8 max-h-[90vh] overflow-y-auto no-scrollbar">
+            <div class="flex items-center justify-between mb-8">
+                <h2 class="text-2xl font-black">Database Admin</h2>
+                <button onclick="closeAdmin()" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div id="admin-login" class="space-y-4">
+                <input type="password" id="admin-pw" placeholder="Admin Password" class="w-full bg-white/5 border border-white/10 p-5 rounded-2xl outline-none focus:border-blue-500 transition-colors">
+                <button onclick="loginAdmin()" class="w-full bg-blue-600 p-5 rounded-2xl font-black uppercase tracking-widest">Login</button>
+            </div>
+
+            <div id="admin-panel" class="hidden space-y-6">
+                <div>
+                    <h3 class="text-xs font-black uppercase text-gray-500 mb-4 tracking-widest">Edit Text Content</h3>
+                    <div id="text-edit-list" class="space-y-3"></div>
+                </div>
+                
+                <hr class="border-white/5">
+                
+                <div>
+                    <h3 class="text-xs font-black uppercase text-gray-500 mb-4 tracking-widest">Web Configuration (SEO)</h3>
+                    <div id="config-edit-list" class="space-y-3 mb-4">
+                        <div class="space-y-1">
+                            <label class="text-[10px] text-gray-500 font-bold">Site Title</label>
+                            <input type="text" id="cfg-site-title" class="admin-config-input w-full bg-white/5 border border-white/10 p-3 rounded-xl text-sm" placeholder="e.g. Baeci Store | Professional Biolink">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-[10px] text-gray-500 font-bold">Meta Description</label>
+                            <textarea id="cfg-meta-desc" class="admin-config-input w-full bg-white/5 border border-white/10 p-3 rounded-xl text-sm h-20" placeholder="SEO Description"></textarea>
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-[10px] text-gray-500 font-bold">Meta Keywords</label>
+                            <input type="text" id="cfg-meta-keys" class="admin-config-input w-full bg-white/5 border border-white/10 p-3 rounded-xl text-sm" placeholder="keyword1, keyword2">
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="border-white/5">
+
+                <div>
+                    <h3 class="text-xs font-black uppercase text-gray-500 mb-4 tracking-widest">Main Links</h3>
+                    <div id="links-edit-list" class="space-y-3 mb-4"></div>
+                    <button onclick="addLink()" class="w-full bg-white/5 p-4 rounded-xl border border-dashed border-white/20 text-xs font-black uppercase tracking-widest hover:bg-white/10 transition-colors">+ Add Link</button>
+                </div>
+
+                <hr class="border-white/5">
+
+                <div>
+                    <h3 class="text-xs font-black uppercase text-gray-500 mb-4 tracking-widest">Sidebar Buttons</h3>
+                    <div id="sidebar-edit-list" class="space-y-3 mb-4"></div>
+                    <button onclick="addSidebarBtn()" class="w-full bg-white/5 p-4 rounded-xl border border-dashed border-white/20 text-xs font-black uppercase tracking-widest hover:bg-white/10 transition-colors">+ Add Sidebar Button</button>
+                </div>
+
+                <div>
+                    <h3 class="text-xs font-black uppercase text-gray-500 mb-4 tracking-widest">Social Icons</h3>
+                    <div id="socials-edit-list" class="space-y-3 mb-4"></div>
+                    <button onclick="addSocial()" class="w-full bg-white/5 p-4 rounded-xl border border-dashed border-white/20 text-xs font-black uppercase tracking-widest hover:bg-white/10 transition-colors">+ Add Social Icon</button>
+                </div>
+
+                <button onclick="saveAdmin()" class="w-full bg-green-600 p-5 rounded-2xl font-black uppercase tracking-widest mt-8 shadow-xl shadow-green-600/20">Save All Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex h-full w-full">
+        <!-- Content Spacer for Desktop Sidebar -->
+        <div class="hidden lg:block w-[350px] flex-shrink-0"></div>
+
+        <!-- MAIN CONTENT -->
+        <main class="flex-1 relative h-full overflow-y-auto no-scrollbar scroll-smooth">
+            
+            <!-- HEADER MOBILE -->
+            <div class="lg:hidden flex items-center justify-between px-6 py-4 sticky top-0 z-[60] ios-panel border-t-0 rounded-b-[2.5rem] mx-2 mt-2">
+                <div class="flex items-center gap-2">
+                    <span class="font-display font-black text-xl tracking-tight" data-editable="header_title">Baeci Store</span>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/e/e4/Twitter_Verified_Badge.svg" class="w-5 h-5 mt-1" alt="V">
+                </div>
+                <button onclick="toggleSidebar()" class="w-12 h-12 flex items-center justify-center rounded-2xl bg-white/10 active:scale-90 transition-transform">
+                    <i class="fa-solid fa-bars-staggered text-xl"></i>
+                </button>
+            </div>
+
+    <div class="max-w-xl mx-auto px-6 pt-12 pb-32">
+                
+                <!-- PROFILE -->
+                <div class="flex flex-col items-center text-center mb-12">
+                    <div class="profile-glow w-32 h-32 lg:w-48 lg:h-48 mb-8">
+                        <img src="https://f.top4top.io/p_3695yhpth1.png" 
+                             alt="Baeci Store" 
+                             class="w-full h-full rounded-full object-cover border-[6px] border-black relative z-10">
+                        <div class="absolute bottom-3 right-3 bg-green-500 w-6 h-6 rounded-full border-4 border-black shadow-2xl z-20"></div>
+                    </div>
+                    
+                    <div class="flex items-center justify-center gap-2 mb-4">
+                        <h2 class="text-3xl lg:text-6xl font-display font-black text-white tracking-tighter" data-editable="title">
+                            Baeci Store
+                        </h2>
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e4/Twitter_Verified_Badge.svg" 
+                             alt="V" 
+                             class="w-6 h-6 lg:w-10 lg:h-10 mt-1 lg:mt-2">
+                    </div>
+                    
+                    <div class="px-5 py-2 rounded-[1.2rem] bg-blue-500/10 border border-blue-500/20 mb-8 inline-block shadow-lg">
+                        <p class="text-blue-400 font-black text-[10px] lg:text-sm tracking-[0.2em] uppercase" data-editable="username">@xwby268</p>
+                    </div>
+                    
+                    <p class="text-gray-300 text-lg lg:text-2xl font-bold leading-relaxed max-w-sm" data-editable="bio">
+                        Rekber, Japost, Topup
+                    </p>
+                    <p class="text-gray-500 text-xs font-medium mt-2 tracking-wide" data-editable="footer_note">Professional Digital Service since 2024</p>
+                    
+                    <!-- DYNAMIC STATS -->
+                    <div class="flex gap-4 w-full mt-10">
+                        <div class="flex-1 ios-panel py-4 rounded-[2rem] hover:scale-105 transition-transform duration-300">
+                            <span class="block text-xl lg:text-3xl font-display font-black" data-editable="stat_sales">12K+</span>
+                            <span class="text-[9px] text-gray-500 uppercase font-black tracking-widest">Sales</span>
+                        </div>
+                        <div class="flex-1 ios-panel py-4 rounded-[2rem] hover:scale-105 transition-transform duration-300">
+                            <span class="block text-xl lg:text-3xl font-display font-black" data-editable="stat_rating">4.9</span>
+                            <span class="text-[9px] text-gray-500 uppercase font-black tracking-widest">Rating</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LINK LIST -->
+                <div id="main-links" class="space-y-4"></div>
+
+                <!-- Footer Social -->
+                <div class="mt-24 text-center">
+                    <div id="social-icons" class="flex justify-center gap-10 mb-8 text-gray-500">
+                        <!-- Dynamic Social Icons -->
+                    </div>
+                    <p class="text-[10px] text-gray-600 font-black tracking-[0.4em] uppercase">
+                        Official Business Profile &bull; Baeci Store
+                    </p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
