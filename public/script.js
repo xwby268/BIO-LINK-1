@@ -20,11 +20,61 @@ function initializeApp() {
     // Clock update
     updateClock();
     setInterval(updateClock, 1000);
-
+    
     // Check if on dashboard page
     if (window.location.pathname === '/dashboard') {
         initializeDashboard();
     }
+    
+    // Ensure mobile header exists
+    ensureMobileHeader();
+}
+
+function ensureMobileHeader() {
+    // Cek apakah di mobile
+    if (window.innerWidth < 1024) {
+        const header = document.querySelector('.lg\\:hidden.fixed');
+        if (!header) {
+            console.log('Mobile header tidak ditemukan, membuat ulang...');
+            createMobileHeader();
+        }
+    }
+}
+
+function createMobileHeader() {
+    const main = document.querySelector('main');
+    if (!main) return;
+    
+    // Hapus header lama jika ada
+    const oldHeader = document.querySelector('.lg\\:hidden.fixed');
+    if (oldHeader) oldHeader.remove();
+    
+    // Buat header baru
+    const header = document.createElement('div');
+    header.className = 'lg:hidden fixed top-0 left-0 right-0 z-[100] ios-panel border-t-0 rounded-b-[2.5rem] mx-2 mt-2';
+    header.style.background = 'rgba(28, 28, 30, 0.95)';
+    header.style.backdropFilter = 'blur(20px)';
+    header.style.webkitBackdropFilter = 'blur(20px)';
+    
+    header.innerHTML = `
+        <div class="flex items-center justify-between px-6 py-4">
+            <div class="flex items-center gap-2">
+                <span class="font-display font-black text-xl tracking-tight text-white" data-editable="header_title">BAECI STORE</span>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/e/e4/Twitter_Verified_Badge.svg" class="w-5 h-5 mt-1" alt="Verified">
+            </div>
+            <button onclick="toggleSidebar()" class="w-12 h-12 flex items-center justify-center rounded-2xl bg-white/10 active:scale-90 transition-transform hover:bg-white/20 border border-white/20">
+                <i class="fa-solid fa-bars-staggered text-xl text-white"></i>
+            </button>
+        </div>
+    `;
+    
+    // Insert header sebelum main
+    main.parentNode.insertBefore(header, main);
+    
+    // Tambahkan spacer
+    const spacer = document.createElement('div');
+    spacer.className = 'lg:hidden h-[80px]';
+    main.parentNode.insertBefore(spacer, main);
 }
 
 function updateClock() {
@@ -48,7 +98,7 @@ function setupEventListeners() {
             toggleSidebar();
         }
     });
-
+    
     // Handle escape key for sidebar
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
@@ -58,15 +108,20 @@ function setupEventListeners() {
             }
         }
     });
+    
+    // Handle resize
+    window.addEventListener('resize', () => {
+        ensureMobileHeader();
+    });
 }
 
 // Sidebar Functions
 function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
     if (!sidebar) return;
-
+    
     sidebar.classList.toggle('sidebar-hidden');
-
+    
     if (!sidebar.classList.contains('sidebar-hidden') && window.innerWidth < 1024) {
         createBackdrop();
     } else {
@@ -113,16 +168,16 @@ function closeAdmin() {
 async function loginAdmin() {
     const passwordInput = document.getElementById('admin-pw');
     if (!passwordInput) return;
-
+    
     const password = passwordInput.value;
-
+    
     try {
         const res = await fetch('/api/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ password })
         });
-
+        
         if (res.ok) {
             document.getElementById('admin-login').classList.add('hidden');
             document.getElementById('admin-panel').classList.remove('hidden');
@@ -169,14 +224,14 @@ function setInputValue(id, value) {
 function renderTextEditList() {
     const textList = document.getElementById('text-edit-list');
     if (!textList) return;
-
+    
     textList.innerHTML = '';
     document.querySelectorAll('[data-editable]').forEach(el => {
         const id = el.getAttribute('data-editable');
         const val = el.innerText;
         textList.innerHTML += `
             <div class="space-y-1">
-                <label class="text-[10px] text-gray-500 font-bold uppercase">${id}</label>
+                <label class="text-[10px] text-gray-500 font-bold uppercase">${escapeHtml(id)}</label>
                 <input type="text" value="${escapeHtml(val)}" data-id="${id}" class="admin-text-input w-full bg-white/5 border border-white/10 p-3 rounded-xl text-sm">
             </div>
         `;
@@ -186,7 +241,7 @@ function renderTextEditList() {
 function renderLinksEditList() {
     const linksList = document.getElementById('links-edit-list');
     if (!linksList) return;
-
+    
     linksList.innerHTML = '';
     localData.links.forEach((link, i) => {
         linksList.innerHTML += createLinkEditor(link, i);
@@ -210,7 +265,7 @@ function createLinkEditor(link, i) {
 function renderSidebarEditList() {
     const sidebarList = document.getElementById('sidebar-edit-list');
     if (!sidebarList) return;
-
+    
     sidebarList.innerHTML = '';
     localData.sidebar.forEach((btn, i) => {
         sidebarList.innerHTML += `
@@ -229,7 +284,7 @@ function renderSidebarEditList() {
 function renderSocialsEditList() {
     const socialsList = document.getElementById('socials-edit-list');
     if (!socialsList) return;
-
+    
     socialsList.innerHTML = '';
     localData.socials.forEach((social, i) => {
         socialsList.innerHTML += `
@@ -247,10 +302,10 @@ function renderSocialsEditList() {
 function renderPagesEditList() {
     const pagesList = document.getElementById('pages-edit-list');
     if (!pagesList) return;
-
+    
     pagesList.innerHTML = '';
     if (!localData.customPages) localData.customPages = [];
-
+    
     localData.customPages.forEach((page, i) => {
         pagesList.innerHTML += createPageEditor(page, i);
     });
@@ -258,7 +313,7 @@ function renderPagesEditList() {
 
 function createPageEditor(page, i) {
     const isHTML = page.type === 'HTML';
-
+    
     return `
         <div class="ios-panel p-4 rounded-2xl space-y-3 relative border border-white/5 bg-white/5">
             <div class="grid grid-cols-2 gap-3">
@@ -271,7 +326,7 @@ function createPageEditor(page, i) {
                     <input type="text" placeholder="slug" value="${escapeHtml(page.slug || '')}" onchange="updatePage(${i}, 'slug', this.value)" class="w-full bg-white/5 border border-white/10 p-2 rounded-lg text-sm">
                 </div>
             </div>
-
+            
             <div class="grid grid-cols-2 gap-3">
                 <div class="space-y-1">
                     <label class="text-[10px] text-gray-500 font-bold uppercase">Type</label>
@@ -288,7 +343,7 @@ function createPageEditor(page, i) {
                     </select>
                 </div>
             </div>
-
+            
             <div class="grid grid-cols-2 gap-3">
                 <div class="flex items-center gap-2">
                     <input type="checkbox" ${page.showInMain ? 'checked' : ''} onchange="updatePage(${i}, 'showInMain', this.checked)" class="w-4 h-4">
@@ -322,7 +377,7 @@ function createPageEditor(page, i) {
                     <input type="text" placeholder="https://..." value="${escapeHtml(page.url || '')}" onchange="updatePage(${i}, 'url', this.value)" class="w-full bg-white/5 border border-white/10 p-2 rounded-lg text-sm">
                 </div>
             `}
-
+            
             <button onclick="removePage(${i})" class="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full text-[10px] flex items-center justify-center hover:bg-red-600">
                 <i class="fa-solid fa-xmark"></i>
             </button>
@@ -415,7 +470,7 @@ function removePage(i) {
 // Save Function
 async function saveAdmin() {
     showLoading(true);
-
+    
     try {
         // Collect text edits
         const texts = {};
@@ -446,7 +501,7 @@ async function saveAdmin() {
             metaDesc: document.getElementById('cfg-meta-desc')?.value || '',
             metaKeys: document.getElementById('cfg-meta-keys')?.value || ''
         };
-
+        
         const payload = { 
             texts, 
             links: localData.links, 
@@ -456,13 +511,13 @@ async function saveAdmin() {
             config,
             customPages: localData.customPages || []
         };
-
+        
         const res = await fetch('/api/content', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
         });
-
+        
         if (res.ok) {
             showNotification('Changes saved successfully!', 'success');
             setTimeout(() => location.reload(), 1500);
@@ -482,7 +537,7 @@ async function loadContent() {
     try {
         const res = await fetch('/api/content');
         const data = await res.json();
-
+        
         if (data) {
             localData = { ...localData, ...data };
             updateUIFromData(data);
@@ -534,10 +589,10 @@ function updateUIFromData(data) {
 
     // Update main links
     updateMainLinks(data);
-
+    
     // Update sidebar
     updateSidebar(data);
-
+    
     // Update social icons
     updateSocialIcons(data);
 }
@@ -555,10 +610,10 @@ function updateMetaTag(name, content) {
 function updateMainLinks(data) {
     const container = document.getElementById('main-links');
     if (!container) return;
-
+    
     // Combine regular links and custom pages
     let allLinks = [...(data.links || [])];
-
+    
     if (data.customPages) {
         data.customPages.forEach(p => {
             if (p.showInMain && p.status === 'active') {
@@ -571,7 +626,7 @@ function updateMainLinks(data) {
             }
         });
     }
-
+    
     if (allLinks.length > 0) {
         container.innerHTML = allLinks.map(link => `
             <a href="${link.url}" class="ios-button block p-5 rounded-[2.5rem] group overflow-hidden relative border-white/10">
@@ -588,19 +643,35 @@ function updateMainLinks(data) {
                 </div>
             </a>
         `).join('');
+    } else {
+        container.innerHTML = `
+            <a href="#" class="ios-button block p-5 rounded-[2.5rem] group overflow-hidden relative border-white/10">
+                <div class="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div class="flex items-center gap-5 relative z-10">
+                    <div class="w-12 h-12 rounded-[1.4rem] bg-blue-500/10 text-blue-400 flex items-center justify-center text-2xl group-hover:rotate-6 transition-transform">
+                        <i class="fa-solid fa-link"></i>
+                    </div>
+                    <div class="text-left flex-1">
+                        <h3 class="font-black text-white text-lg lg:text-2xl">New Link</h3>
+                        <p class="text-xs text-gray-400 font-bold">Subtitle</p>
+                    </div>
+                    <i class="fa-solid fa-arrow-right-long text-gray-600 group-hover:text-white group-hover:translate-x-2 transition-all"></i>
+                </div>
+            </a>
+        `;
     }
 }
 
 function updateSidebar(data) {
     const nav = document.getElementById('sidebar-nav');
     if (!nav) return;
-
+    
     // Keep home link
     const homeLink = nav.firstElementChild ? nav.firstElementChild.outerHTML : '';
-
+    
     // Combine sidebar items
     let sidebarItems = [...(data.sidebar || [])];
-
+    
     if (data.customPages) {
         data.customPages.forEach(p => {
             if (p.showInSidebar && p.status === 'active') {
@@ -612,9 +683,9 @@ function updateSidebar(data) {
             }
         });
     }
-
+    
     nav.innerHTML = homeLink + sidebarItems.map(btn => `
-        <a href="${btn.url}" class="flex items-center gap-5 p-5 rounded-[2rem] hover:bg-white/5 transition-all text-gray-400 hover:text-white border border-transparent hover:border-white/10 group">
+        <a href="${btn.url}" class="flex items-center gap-5 p-5 rounded-[2rem] hover:bg-white/10 transition-all text-gray-400 hover:text-white border border-transparent hover:border-white/10 group">
             <i class="${escapeHtml(btn.icon)} group-hover:scale-110 transition-transform"></i> 
             <span class="font-bold">${escapeHtml(btn.label)}</span>
         </a>
@@ -624,19 +695,27 @@ function updateSidebar(data) {
 function updateSocialIcons(data) {
     const container = document.getElementById('social-icons');
     if (!container || !data.socials) return;
-
-    container.innerHTML = data.socials.map(social => `
-        <a href="${escapeHtml(social.url)}" target="_blank" rel="noopener noreferrer" class="inline-block hover:scale-110 transition-transform">
-            <i class="${escapeHtml(social.icon)} text-3xl text-gray-500 hover:text-white"></i>
-        </a>
-    `).join('');
+    
+    if (data.socials.length > 0) {
+        container.innerHTML = data.socials.map(social => `
+            <a href="${escapeHtml(social.url)}" target="_blank" rel="noopener noreferrer" class="inline-block hover:scale-110 transition-transform">
+                <i class="${escapeHtml(social.icon)} text-3xl text-gray-500 hover:text-white"></i>
+            </a>
+        `).join('');
+    } else {
+        container.innerHTML = `
+            <i class="fa-brands fa-instagram text-3xl text-gray-500 hover:text-white cursor-pointer hover:scale-110 transition-transform"></i>
+            <i class="fa-brands fa-tiktok text-3xl text-gray-500 hover:text-white cursor-pointer hover:scale-110 transition-transform"></i>
+            <i class="fa-brands fa-whatsapp text-3xl text-gray-500 hover:text-white cursor-pointer hover:scale-110 transition-transform"></i>
+        `;
+    }
 }
 
 // Dashboard Functions
 function initializeDashboard() {
     let totalOps = 0;
     let startTime = Date.now();
-
+    
     const activityList = document.getElementById('activity-list');
     const statusDot = document.getElementById('status-dot');
     const statusText = document.getElementById('status-text');
@@ -651,7 +730,7 @@ function initializeDashboard() {
         const s = (diff % 60).toString().padStart(2, '0');
         uptimeEl.textContent = `${h}:${m}:${s}`;
     }
-
+    
     setInterval(updateUptime, 1000);
 
     function addActivity(data) {
@@ -662,7 +741,7 @@ function initializeDashboard() {
 
         const item = document.createElement('div');
         item.className = 'activity-item p-6 flex items-center justify-between hover:bg-white/5 transition-colors';
-
+        
         const time = new Date().toLocaleTimeString('id-ID', { hour12: false });
         const methodColor = {
             'GET': 'text-blue-400',
@@ -695,16 +774,14 @@ function initializeDashboard() {
         }
     }
 
-    function clearLogs() {
+    window.clearLogs = function() {
         if (activityList) {
             activityList.innerHTML = '';
         }
         totalOps = 0;
         if (totalOpsEl) totalOpsEl.textContent = '0';
-    }
-
-    // Make clearLogs globally available
-    window.clearLogs = clearLogs;
+        showNotification('Logs cleared', 'info');
+    };
 
     // EventSource connection
     const evtSource = new EventSource('/api/activity-stream');
@@ -717,6 +794,13 @@ function initializeDashboard() {
     evtSource.onerror = () => {
         if (statusDot) statusDot.className = 'w-2 h-2 rounded-full bg-red-500';
         if (statusText) statusText.textContent = 'Disconnected';
+        
+        // Try to reconnect after 3 seconds
+        setTimeout(() => {
+            if (statusText && statusText.textContent === 'Disconnected') {
+                location.reload();
+            }
+        }, 3000);
     };
 
     evtSource.onmessage = (event) => {
@@ -751,6 +835,10 @@ function showLoading(show) {
 }
 
 function showNotification(message, type = 'info') {
+    // Remove existing notification
+    const existing = document.querySelector('.fixed.top-4.right-4');
+    if (existing) existing.remove();
+    
     // Create notification element
     const notification = document.createElement('div');
     notification.className = `fixed top-4 right-4 z-[9999] px-6 py-4 rounded-2xl ios-panel text-white font-bold animate-slideIn ${
@@ -767,9 +855,9 @@ function showNotification(message, type = 'info') {
             <span>${escapeHtml(message)}</span>
         </div>
     `;
-
+    
     document.body.appendChild(notification);
-
+    
     // Remove after 3 seconds
     setTimeout(() => {
         notification.style.opacity = '0';
@@ -777,25 +865,6 @@ function showNotification(message, type = 'info') {
         setTimeout(() => notification.remove(), 300);
     }, 3000);
 }
-
-// Add CSS animation
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes slideIn {
-        from {
-            opacity: 0;
-            transform: translateX(100%);
-        }
-        to {
-            opacity: 1;
-            transform: translateX(0);
-        }
-    }
-    .animate-slideIn {
-        animation: slideIn 0.3s ease-out forwards;
-    }
-`;
-document.head.appendChild(style);
 
 // Export functions to global scope
 window.toggleSidebar = toggleSidebar;
@@ -815,3 +884,4 @@ window.updateSocial = updateSocial;
 window.addCustomPage = addCustomPage;
 window.removePage = removePage;
 window.updatePage = updatePage;
+window.clearLogs = null; // Will be set in dashboard
