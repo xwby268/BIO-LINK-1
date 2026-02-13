@@ -86,14 +86,18 @@ app.get('/api/content', async (req, res) => {
         const client = await clientPromise;
         const db = client.db('baeci');
         const content = await db.collection('content').findOne({ id: 'main' });
-
+        
         // Return default structure if no content exists
         if (!content) {
             return res.json({
                 texts: {
-                    title: 'Baeci Store',
-                    username: '@xwby268',
-                    bio: 'Rekber, Japost, Topup'
+                    title: 'BAECI STORE',
+                    username: '@BAECIOFFICIAL',
+                    bio: 'Rekber, Japost, Topup',
+                    header_title: 'BAECI STORE',
+                    footer_note: 'Professional Digital Service since 2024',
+                    stat_sales: '12K+',
+                    stat_rating: '4.9'
                 },
                 links: [],
                 sidebar: [],
@@ -105,13 +109,13 @@ app.get('/api/content', async (req, res) => {
                     profile: 'https://f.top4top.io/p_3695yhpth1.png'
                 },
                 config: {
-                    siteTitle: 'Baeci Store | Professional Biolink',
-                    metaDesc: 'Baeci Store Official - Penyedia layanan Rekber, Japost, dan Topup Game termurah & terpercaya',
-                    metaKeys: 'Baeci Store, Rekber, Japost, Topup Game'
+                    siteTitle: 'BAECI STORE | Professional Biolink',
+                    metaDesc: 'BAECI STORE Official - Penyedia layanan Rekber, Japost, dan Topup Game termurah & terpercaya',
+                    metaKeys: 'BAECI STORE, Rekber, Japost, Topup Game'
                 }
             });
         }
-
+        
         res.json(content);
     } catch (e) {
         console.error('Error fetching content:', e);
@@ -121,11 +125,11 @@ app.get('/api/content', async (req, res) => {
 
 app.post('/api/login', (req, res) => {
     const { password } = req.body;
-
+    
     if (!password) {
         return res.status(400).json({ error: 'Password required' });
     }
-
+    
     if (password === config.ADMIN_PASSWORD) {
         req.session.admin = true;
         res.json({ success: true });
@@ -143,10 +147,10 @@ app.post('/api/content', isAdmin, async (req, res) => {
     try {
         const client = await clientPromise;
         const db = client.db('baeci');
-
+        
         // Validate the content structure
         const content = req.body;
-
+        
         await db.collection('content').updateOne(
             { id: 'main' },
             { 
@@ -157,14 +161,15 @@ app.post('/api/content', isAdmin, async (req, res) => {
             },
             { upsert: true }
         );
-
+        
         // Broadcast the update
         broadcastActivity({
             method: 'POST',
             path: '/api/content',
-            details: 'Content updated successfully'
+            details: 'Content updated successfully',
+            timestamp: new Date().toISOString()
         });
-
+        
         res.json({ success: true });
     } catch (e) {
         console.error('Error saving content:', e);
@@ -186,7 +191,11 @@ app.use('/api/', (req, res, next) => {
 });
 
 // Serve static files
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public'), {
+    maxAge: '1h',
+    etag: true,
+    lastModified: true
+}));
 
 // HTML routes
 app.get('/dashboard', (req, res) => {
@@ -200,22 +209,23 @@ app.get('/dbadmin', (req, res) => {
 // Dynamic routes for custom pages
 app.get('/:route', async (req, res, next) => {
     const route = req.params.route;
-
+    
     // Skip if it's a static file or API route
     if (route.includes('.') || 
         route === 'api' || 
         route === 'dashboard' || 
         route === 'dbadmin' ||
         route === 'style.css' ||
-        route === 'script.js') {
+        route === 'script.js' ||
+        route === 'favicon.ico') {
         return next();
     }
-
+    
     try {
         const client = await clientPromise;
         const db = client.db('baeci');
         const content = await db.collection('content').findOne({ id: 'main' });
-
+        
         if (content && content.customPages) {
             const page = content.customPages.find(p => p.slug === route && p.status === 'active');
             if (page) {
@@ -228,7 +238,7 @@ app.get('/:route', async (req, res, next) => {
                         <head>
                             <meta charset="UTF-8">
                             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                            <title>${page.title || 'Baeci Store'}</title>
+                            <title>${page.title || 'BAECI STORE'}</title>
                             <script src="https://cdn.tailwindcss.com"></script>
                             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
                             <link rel="stylesheet" href="/style.css">
@@ -252,6 +262,11 @@ app.get('/:route', async (req, res, next) => {
     next();
 });
 
+// Root route
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
 // Catch-all route - serve index.html
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
@@ -266,6 +281,7 @@ app.use((err, req, res, next) => {
 // Start server
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server running on http://0.0.0.0:${PORT}`);
+    console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
 });
 
 // Export for Vercel
