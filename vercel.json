@@ -22,11 +22,11 @@
     },
     {
       "src": "/style.css",
-      "dest": "public/style.css"
+      "dest": "/public/style.css"
     },
     {
       "src": "/script.js",
-      "dest": "public/script.js"
+      "dest": "/public/script.js"
     },
     {
       "src": "/(.*)",
